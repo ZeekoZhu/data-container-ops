@@ -1,95 +1,95 @@
 #
-# ģ�顰Docker-Ops����ģ���嵥
+# 模块“Docker-Ops”的模块清单
 #
-# ������: Zeeko
+# 生成者: Zeeko
 #
-# ����ʱ��: 2018/6/12
+# 生成时间: 2018/6/12
 #
 
 @{
 
-# ����嵥�����Ľű�ģ��������ģ���ļ���
+# 与此清单关联的脚本模块或二进制模块文件。
 RootModule = 'DataContainer-Utils.psm1'
 
-# ��ģ��İ汾�š�
+# 此模块的版本号。
 ModuleVersion = '0.1.0'
 
-# ֧�ֵ� PSEditions
+# 支持的 PSEditions
 # CompatiblePSEditions = @()
 
-# ����Ψһ��ʶ��ģ��� ID
+# 用于唯一标识此模块的 ID
 GUID = '4e2868ab-e830-4b97-99df-8c77f3f4a137'
 
-# ��ģ�������
+# 此模块的作者
 Author = 'Zeeko'
 
-# ��ģ�������Ĺ�˾��Ӧ��
-CompanyName = 'δ֪'
+# 此模块所属的公司或供应商
+CompanyName = '未知'
 
-# ��ģ��İ�Ȩ����
-Copyright = '(c) 2018 Zeeko����������Ȩ����'
+# 此模块的版权声明
+Copyright = '(c) 2018 Zeeko。保留所有权利。'
 
-# ��ģ�����ṩ���ܵ�˵��
+# 此模块所提供功能的说明
 Description = 'Some utils for docker operations'
 
-# ��ģ��Ҫ��� Windows PowerShell �������Ͱ汾
+# 此模块要求的 Windows PowerShell 引擎的最低版本
 PowerShellVersion = '5.1'
 
-# ��ģ��Ҫ��� Windows PowerShell ����������
+# 此模块要求的 Windows PowerShell 主机的名称
 # PowerShellHostName = ''
 
-# ��ģ��Ҫ��� Windows PowerShell ��������Ͱ汾
+# 此模块要求的 Windows PowerShell 主机的最低版本
 # PowerShellHostVersion = ''
 
-# ��ģ��Ҫ��ʹ�õ���� Microsoft .NET Framework �汾�����Ⱦ��������� PowerShell Desktop �汾��Ч��
+# 此模块要求使用的最低 Microsoft .NET Framework 版本。此先决条件仅对 PowerShell Desktop 版本有效。
 # DotNetFrameworkVersion = ''
 
-# ��ģ��Ҫ��ʹ�õ���͹�����������ʱ(CLR)�汾�����Ⱦ��������� PowerShell Desktop �汾��Ч��
+# 此模块要求使用的最低公共语言运行时(CLR)版本。此先决条件仅对 PowerShell Desktop 版本有效。
 # CLRVersion = ''
 
-# ��ģ��Ҫ��Ĵ�������ϵ�ṹ(�ޡ�X86��Amd64)
+# 此模块要求的处理器体系结构(无、X86、Amd64)
 # ProcessorArchitecture = ''
 
-# �����ڵ����ģ��֮ǰ�ȵ���ȫ�ֻ����е�ģ��
+# 必须在导入此模块之前先导入全局环境中的模块
 # RequiredModules = @()
 
-# �����ģ��֮ǰ������صĳ���
+# 导入此模块之前必须加载的程序集
 # RequiredAssemblies = @()
 
-# �����ģ��֮ǰ�����ڵ��÷������еĽű��ļ�(.ps1)��
+# 导入此模块之前运行在调用方环境中的脚本文件(.ps1)。
 # ScriptsToProcess = @()
 
-# �����ģ��ʱҪ���ص������ļ�(.ps1xml)
+# 导入此模块时要加载的类型文件(.ps1xml)
 # TypesToProcess = @()
 
-# �����ģ��ʱҪ���صĸ�ʽ�ļ�(.ps1xml)
+# 导入此模块时要加载的格式文件(.ps1xml)
 # FormatsToProcess = @()
 
-# ����Ϊ RootModule/ModuleToProcess ����ָ��ģ���Ƕ��ģ�鵼���ģ��
+# 将作为 RootModule/ModuleToProcess 中所指定模块的嵌套模块导入的模块
 # NestedModules = @()
 
-# Ҫ�Ӵ�ģ���е����ĺ�����Ϊ�˻��������ܣ��벻Ҫʹ��ͨ�������Ҫɾ������Ŀ�����û��Ҫ�����ĺ�������ʹ�ÿ����顣
+# 要从此模块中导出的函数。为了获得最佳性能，请不要使用通配符，不要删除该条目。如果没有要导出的函数，请使用空数组。
 FunctionsToExport = 'Restore-FromConfig', 'Backup-FromConfig', 'Get-DataContainerConfig'
 
-# Ҫ�Ӵ�ģ���е����� cmdlet��Ϊ�˻��������ܣ��벻Ҫʹ��ͨ�������Ҫɾ������Ŀ�����û��Ҫ������ cmdlet����ʹ�ÿ����顣
+# 要从此模块中导出的 cmdlet。为了获得最佳性能，请不要使用通配符，不要删除该条目。如果没有要导出的 cmdlet，请使用空数组。
 CmdletsToExport = @()
 
-# Ҫ�Ӵ�ģ���е����ı���
+# 要从此模块中导出的变量
 # VariablesToExport = @()
 
-# Ҫ�Ӵ�ģ���е����ı�����Ϊ�˻��������ܣ��벻Ҫʹ��ͨ�������Ҫɾ������Ŀ�����û��Ҫ�����ı�������ʹ�ÿ����顣
+# 要从此模块中导出的别名。为了获得最佳性能，请不要使用通配符，不要删除该条目。如果没有要导出的别名，请使用空数组。
 AliasesToExport = @()
 
-# Ҫ�Ӵ�ģ�鵼���� DSC ��Դ
+# 要从此模块导出的 DSC 资源
 # DscResourcesToExport = @()
 
-# ���ģ��һ����������ģ����б�
+# 与此模块一起打包的所有模块的列表
 # ModuleList = @()
 
-# ���ģ��һ�����������ļ����б�
+# 与此模块一起打包的所有文件的列表
 # FileList = @()
 
-# Ҫ���ݵ� RootModule/ModuleToProcess ��ָ����ģ���ר�����ݡ��⻹���ܰ��� PSData ��ϣ���Լ� PowerShell ʹ�õ�����ģ��Ԫ���ݡ�
+# 要传递到 RootModule/ModuleToProcess 中指定的模块的专用数据。这还可能包含 PSData 哈希表以及 PowerShell 使用的其他模块元数据。
 PrivateData = @{
 
     PSData = @{
@@ -116,10 +116,10 @@ PrivateData = @{
     
  } # End of PrivateData hashtable
 
-# ��ģ��� HelpInfo URI
+# 此模块的 HelpInfo URI
 # HelpInfoURI = ''
 
-# �Ӵ�ģ���е����������Ĭ��ǰ׺������ʹ�� Import-Module -Prefix ����Ĭ��ǰ׺��
+# 从此模块中导出的命令的默认前缀。可以使用 Import-Module -Prefix 覆盖默认前缀。
 # DefaultCommandPrefix = ''
 
 }
