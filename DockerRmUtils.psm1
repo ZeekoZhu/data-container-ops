@@ -1,3 +1,12 @@
+function Show-ContainerList {
+    param(
+        # List
+        [Parameter(Mandatory = $true)]
+        [array]
+        $List
+    )
+}
+
 function Remove-DockerContainer {
     param(
         # interactive
@@ -7,6 +16,6 @@ function Remove-DockerContainer {
     )
 
     if ($Interactive) {
-        ConvertFrom-Docker $(docker ps -a)
+        $containers = ConvertFrom-Docker $(docker ps -a)
     }
 }
