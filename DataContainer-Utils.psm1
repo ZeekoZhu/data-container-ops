@@ -1,10 +1,23 @@
 $ErrorActionPreference = 'stop'
 Import-Module "$PSScriptRoot/Utils.psm1"
+
+function Get-ParentPath {
+    param(
+        # Path
+        [Parameter(Mandatory = $true)]
+        [string]
+        $Path
+    )
+    return ($Path -split '/' | Select-Object -SkipLast 1) -join "/"
+}
 function Backup-DataContainer ($Config) {
     $ErrorActionPreference = 'stop'
     $backupImage = "$($Config.remoteName)-data"
     # $volumeArgs = ($Config.volumes | ForEach-Object { "'-v' '$_'" }) -join " "
-    $cpCmds = ($Config.volumes | ForEach-Object { "mkdir -p /backup$_ && cp -vRf $_ /backup$_" }) -join " && "
+    $cpCmds = ($Config.volumes | ForEach-Object {
+            $parent = Get-ParentPath "/backup$_"
+            "mkdir -p /backup$_ && cp -vRf $_ $parent" 
+        }) -join " && "
     Write-Output "Backup local container $($Config.container)'s volumes to ops-backup-$backupImage"
     Write-Output "Invoking: 'docker' 'run' '--volumes-from' '$($Config.container):ro' '--name' 'ops-backup-$backupImage' 'alpine' 'sh' -c '$cpCmds'"
     # backup data container's volumes
@@ -25,7 +38,10 @@ function Restore-DataContainer ($Config) {
     $backupImage = "$($Config.remoteName)-data"
     $remote = "$($Config.registry)$backupImage"
     $volumeArgs = ($Config.volumes | ForEach-Object { "-v $_" }) -join " "
-    $cpCmds = ($Config.volumes | ForEach-Object { "mkdir -p $_ && mv -v /backup$_ $_" }) -join " && "
+    $cpCmds = ($Config.volumes | ForEach-Object {
+            $parent = Get-ParentPath "$_"
+            "mkdir -p $_ && mv -v /backup$_ $parent"
+        }) -join " && "
     Write-Output "Restore $remote to local container $backupImage"
     Write-Output "Invoking: 'docker' 'run' $volumeArgs'--name' '$backupImage' '$remote' 'sh' -c '$cpCmds'"
     Invoke-Cmd "'docker' 'run' $volumeArgs '--name' '$backupImage' '$remote' 'sh' -c '$cpCmds'"
