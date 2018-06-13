@@ -18,6 +18,7 @@ function Backup-DataContainer ($Config) {
     Write-Output "Pushing: '$($remote):$date'"
     Invoke-Cmd "'docker' 'push' '$($remote):$date'"
     Invoke-Cmd "'docker' 'push' '$($remote):latest'"
+    Invoke-Cmd "docker rm -f 'ops-backup-$backupImage'"
 }
 
 function Restore-DataContainer ($Config) {
