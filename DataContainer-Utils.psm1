@@ -4,7 +4,7 @@ function Backup-DataContainer ($Config) {
     $ErrorActionPreference = 'stop'
     $backupImage = "$($Config.remoteName)-data"
     # $volumeArgs = ($Config.volumes | ForEach-Object { "'-v' '$_'" }) -join " "
-    $cpCmds = ($Config.volumes | ForEach-Object { "mkdir -p /backup$_ && cp -Rf $_ /backup$_" }) -join " && "
+    $cpCmds = ($Config.volumes | ForEach-Object { "mkdir -p /backup$_ && cp -vRf $_ /backup$_" }) -join " && "
     Write-Output "Backup local container $($Config.container)'s volumes to ops-backup-$backupImage"
     Write-Output "Invoking: 'docker' 'run' '--volumes-from' '$($Config.container):ro' '--name' 'ops-backup-$backupImage' 'alpine' 'sh' -c $cpCmds"
     # backup data container's volumes
@@ -14,14 +14,14 @@ function Backup-DataContainer ($Config) {
     $remote = "$($Config.registry)$backupImage"
     Invoke-Cmd "'docker' 'commit' 'ops-backup-$backupImage' '$remote'"
 
-    Invoke-Cmd "'docker' 'push' '$registry'"
+    Invoke-Cmd "'docker' 'push' '$remote'"
 }
 
 function Restore-DataContainer ($Config) {
     $backupImage = "$($Config.remoteName)-data"
     $remote = "$($Config.registry)$backupImage"
     $volumeArgs = ($Config.volumes | ForEach-Object { "-v $_" }) -join " "
-    $cpCmds = ($Config.volumes | ForEach-Object { "cp -Rf /backup$_ $_" }) -join " && "
+    $cpCmds = ($Config.volumes | ForEach-Object { "mkdir -p /backup/$_ && cp -vRf /backup$_ $_" }) -join " && "
     Write-Output "Restore $remote to local container $backupContainer"
     Write-Output "Invoking: 'docker' 'run' $volumeArgs'--name' '$backupContainer' '$remote' 'sh' -c '$cpCmds'"
     Invoke-Cmd "'docker' 'run' $volumeArgs '--name' '$backupContainer' '$remote' 'sh' -c '$cpCmds'"
