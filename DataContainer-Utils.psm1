@@ -3,7 +3,8 @@ Import-Module "$PSScriptRoot/Utils.psm1"
 function Backup-DataContainer ($Config) {
     $backupImage = "$($Config.remoteName)-data"
     $volumeArgs = -join ($Config.volumes | ForEach-Object { "'-v' '/backup/$($_):$_' " })
-    $cpCmds = -join ($Config.volumes | ForEach-Object { "'cp' '-Rf' '/backup/$_' '$_' '&&' " })
+    $cpCmds = -join ($Config.volumes | ForEach-Object { "'cp' '-Rf' '/backup$_' '$_' && " })
+    Write-Output "Invoking: 'docker' 'run' '--volumes-from' '$($Config.container)' '--name' '$backupImage' $volumeArgs 'alpine' $cpCmds"
     # backup data container's volumes
     Invoke-Cmd "'docker' 'run' '--volumes-from' '$($Config.container)' '--name' '$backupImage' $volumeArgs 'alpine' $cpCmds"
 
@@ -18,6 +19,7 @@ function Restore-DataContainer ($Config) {
     $backupImage = "$($Config.remoteName)-data"
     $remote = "$($Config.registry)$backupImage"
     $volumeArgs = -join ($Config.volumes | ForEach-Object { "-v /backup/$($_):$_ " })
+    Write-Output "Invoking: 'docker' 'run' $volumeArgs '--entrypoint' 'bin/sh' '--name' '$backupContainer' '$remote'"
     Invoke-Cmd "'docker' 'run' $volumeArgs '--entrypoint' 'bin/sh' '--name' '$backupContainer' '$remote'"
 }
 
