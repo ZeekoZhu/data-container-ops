@@ -2,11 +2,11 @@ $ErrorActionPreference = 'stop'
 Import-Module "$PSScriptRoot/Utils.psm1"
 function Backup-DataContainer ($Config) {
     $backupImage = "$($Config.remoteName)-data"
-    $volumeArgs = -join ($Config.volumes | ForEach-Object { "'-v' '/backup/$($_):$_' " })
-    $cpCmds = -join ($Config.volumes | ForEach-Object { "'cp' '-Rf' '/backup$_' '$_' && " })
-    Write-Output "Invoking: 'docker' 'run' '--volumes-from' '$($Config.container)' '--name' '$backupImage' $volumeArgs 'alpine' $cpCmds"
+    $volumeArgs = ($Config.volumes | ForEach-Object { "'-v' '/backup/$($_):$_'" }) -join " "
+    $cpCmds = ($Config.volumes | ForEach-Object { "cp -Rf /backup$_ $_" }) -join " && "
+    Write-Output "Invoking: 'docker' 'run' '--volumes-from' '$($Config.container)' '--name' '$backupImage' $volumeArgs 'alpine' 'sh' -c $cpCmds"
     # backup data container's volumes
-    Invoke-Cmd "'docker' 'run' '--volumes-from' '$($Config.container)' '--name' '$backupImage' $volumeArgs 'alpine' $cpCmds"
+    Invoke-Cmd "'docker' 'run' '--volumes-from' '$($Config.container)' '--name' '$backupImage' $volumeArgs 'alpine' 'sh' -c '$cpCmds'"
 
     # commit backup to registry
     $remote = "$($Config.registry)$backupImage"
