@@ -1,4 +1,4 @@
-Import-Module ./Utils.psm1
+Import-Module "$PSScriptRoot/Utils.psm1"
 function Backup-DataContainer ($Config) {
     $backupContainer = "$($Config.container)-data"
     $volumeArgs = -join ($Config.volumes | ForEach-Object { "'-v' '/backup/$($_):$_' " })
