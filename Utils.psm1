@@ -8,7 +8,7 @@ function Invoke-Cmd {
     $ErrorActionPreference = 'stop'
     $result = Invoke-Expression "& $Command"
     if ($LASTEXITCODE -ne 0) {
-        Write-Error -Message $result
+        Write-Error -Message ($result -join "`n")
     }
     return $result
 }

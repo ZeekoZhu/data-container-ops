@@ -6,15 +6,18 @@ function Backup-DataContainer ($Config) {
     # $volumeArgs = ($Config.volumes | ForEach-Object { "'-v' '$_'" }) -join " "
     $cpCmds = ($Config.volumes | ForEach-Object { "mkdir -p /backup$_ && cp -vRf $_ /backup$_" }) -join " && "
     Write-Output "Backup local container $($Config.container)'s volumes to ops-backup-$backupImage"
-    Write-Output "Invoking: 'docker' 'run' '--volumes-from' '$($Config.container):ro' '--name' 'ops-backup-$backupImage' 'alpine' 'sh' -c $cpCmds"
+    Write-Output "Invoking: 'docker' 'run' '--volumes-from' '$($Config.container):ro' '--name' 'ops-backup-$backupImage' 'alpine' 'sh' -c '$cpCmds'"
     # backup data container's volumes
     Invoke-Cmd "'docker' 'run' '--volumes-from' '$($Config.container):ro' '--name' 'ops-backup-$backupImage' 'alpine' 'sh' -c '$cpCmds'"
 
     # commit backup to registry
     $remote = "$($Config.registry)$backupImage"
-    Invoke-Cmd "'docker' 'commit' 'ops-backup-$backupImage' '$remote'"
-
-    Invoke-Cmd "'docker' 'push' '$remote'"
+    $date = Get-Date -Format "yyyy-MM-dd-HH-mm-ss"
+    Invoke-Cmd "'docker' 'commit' 'ops-backup-$backupImage' '$($remote):$date'"
+    Invoke-Cmd "docker tag '$($remote):$date' '$($remote):latest'"
+    Write-Output "Pushing: '$($remote):$date'"
+    Invoke-Cmd "'docker' 'push' '$($remote):$date'"
+    Invoke-Cmd "'docker' 'push' '$($remote):latest'"
 }
 
 function Restore-DataContainer ($Config) {
