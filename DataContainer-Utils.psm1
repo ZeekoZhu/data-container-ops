@@ -4,7 +4,7 @@ function Backup-DataContainer ($Config) {
     $ErrorActionPreference = 'stop'
     $backupImage = "$($Config.remoteName)-data"
     # $volumeArgs = ($Config.volumes | ForEach-Object { "'-v' '$_'" }) -join " "
-    $cpCmds = ($Config.volumes | ForEach-Object { "cp -Rf $_ /backup$_" }) -join " && "
+    $cpCmds = ($Config.volumes | ForEach-Object { "mkdir -p /backup$_ && cp -Rf $_ /backup$_" }) -join " && "
     Write-Output "Backup local container $($Config.container)'s volumes to ops-backup-$backupImage"
     Write-Output "Invoking: 'docker' 'run' '--volumes-from' '$($Config.container):ro' '--name' 'ops-backup-$backupImage' 'alpine' 'sh' -c $cpCmds"
     # backup data container's volumes
