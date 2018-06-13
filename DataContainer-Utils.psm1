@@ -3,12 +3,12 @@ Import-Module "$PSScriptRoot/Utils.psm1"
 function Backup-DataContainer ($Config) {
     $ErrorActionPreference = 'stop'
     $backupImage = "$($Config.remoteName)-data"
-    $volumeArgs = ($Config.volumes | ForEach-Object { "'-v' '/backup$($_):$_'" }) -join " "
-    $cpCmds = ($Config.volumes | ForEach-Object { "cp -Rf /backup$_ $_" }) -join " && "
+    $volumeArgs = ($Config.volumes | ForEach-Object { "'-v' '$_'" }) -join " "
+    $cpCmds = ($Config.volumes | ForEach-Object { "cp -Rf $_ /backup$_" }) -join " && "
     Write-Output "Backup local container $($Config.container)'s volumes to ops-backup-$backupImage"
-    Write-Output "Invoking: 'docker' 'run' '--volumes-from' '$($Config.container)' '--name' 'ops-backup-$backupImage' $volumeArgs 'alpine' 'sh' -c $cpCmds"
+    Write-Output "Invoking: 'docker' 'run' '--volumes-from' '$($Config.container):ro' '--name' 'ops-backup-$backupImage' $volumeArgs 'alpine' 'sh' -c $cpCmds"
     # backup data container's volumes
-    Invoke-Cmd "'docker' 'run' '--volumes-from' '$($Config.container)' '--name' 'ops-backup-$backupImage' $volumeArgs 'alpine' 'sh' -c '$cpCmds'"
+    Invoke-Cmd "'docker' 'run' '--volumes-from' '$($Config.container):ro' '--name' 'ops-backup-$backupImage' $volumeArgs 'alpine' 'sh' -c '$cpCmds'"
 
     # commit backup to registry
     $remote = "$($Config.registry)$backupImage"
@@ -20,10 +20,11 @@ function Backup-DataContainer ($Config) {
 function Restore-DataContainer ($Config) {
     $backupImage = "$($Config.remoteName)-data"
     $remote = "$($Config.registry)$backupImage"
-    $volumeArgs = -join ($Config.volumes | ForEach-Object { "-v /backup/$($_):$_ " })
+    $volumeArgs = ($Config.volumes | ForEach-Object { "-v $_" }) -join " "
+    $cpCmds = ($Config.volumes | ForEach-Object { "cp -Rf /backup$_ $_" }) -join " && "
     Write-Output "Restore $remote to local container $backupContainer"
-    Write-Output "Invoking: 'docker' 'run' $volumeArgs '--entrypoint' 'bin/sh' '--name' '$backupContainer' '$remote'"
-    Invoke-Cmd "'docker' 'run' $volumeArgs '--entrypoint' 'bin/sh' '--name' '$backupContainer' '$remote'"
+    Write-Output "Invoking: 'docker' 'run' $volumeArgs'--name' '$backupContainer' '$remote' 'sh' -c '$cpCmds'"
+    Invoke-Cmd "'docker' 'run' $volumeArgs '--name' '$backupContainer' '$remote' 'sh' -c '$cpCmds'"
 }
 
 function Backup-FromConfig {
