@@ -1,16 +1,4 @@
-function Invoke-Cmd {
-    param(
-        # Command
-        [Parameter(Mandatory = $true)]
-        [string]
-        $Command
-    )
-    $result = Invoke-Expression "& $Command"
-    if ($LASTEXITCODE -ne 0) {
-        Write-Error -Message $result
-    }
-    return $result
-}
+Import-Module ./Utils.psm1
 function Backup-DataContainer ($Config) {
     $backupContainer = "$($Config.container)-data"
     $volumeArgs = -join ($Config.volumes | ForEach-Object { "'-v' '/backup/$($_):$_' " })
