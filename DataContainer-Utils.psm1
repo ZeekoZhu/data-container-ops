@@ -24,7 +24,7 @@ function Restore-DataContainer ($Config) {
     $backupImage = "$($Config.remoteName)-data"
     $remote = "$($Config.registry)$backupImage"
     $volumeArgs = ($Config.volumes | ForEach-Object { "-v $_" }) -join " "
-    $cpCmds = ($Config.volumes | ForEach-Object { "mkdir -p /backup/$_ && cp -vRf /backup$_ $_" }) -join " && "
+    $cpCmds = ($Config.volumes | ForEach-Object { "mkdir -p /backup/$_ && mv -v /backup$_ $_" }) -join " && "
     Write-Output "Restore $remote to local container $backupContainer"
     Write-Output "Invoking: 'docker' 'run' $volumeArgs'--name' '$backupContainer' '$remote' 'sh' -c '$cpCmds'"
     Invoke-Cmd "'docker' 'run' $volumeArgs '--name' '$backupContainer' '$remote' 'sh' -c '$cpCmds'"
