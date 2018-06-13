@@ -1,12 +1,12 @@
 ﻿@{
     # If authoring a script module, the RootModule is the name of your .psm1 file
-    RootModule           = 'DataContainer-Utils.psm1'
+    RootModule           = 'Docker-Ops.psm1'
 
     Author               = 'Zeeko Zhu <vaezt@outlook.com>'
 
     CompanyName          = 'Unknown'
 
-    ModuleVersion        = '0.2.14'
+    ModuleVersion        = '0.3.0'
 
     # Use the New-Guid command to generate a GUID, and copy/paste into the next line
     GUID                 = '4e2868ab-e830-4b97-99df-8c77f3f4a137'
@@ -29,6 +29,7 @@
 
     # Which PowerShell variables are exported from your module? (eg. Fruits, Vegetables)
     VariablesToExport    = @('')
+    RequiredModules      = @('posh-docker')
 
     # PowerShell Gallery: Define your module's metadata
     PrivateData          = @{

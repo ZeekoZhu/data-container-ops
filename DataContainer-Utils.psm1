@@ -26,9 +26,9 @@ function Restore-DataContainer ($Config) {
     $remote = "$($Config.registry)$backupImage"
     $volumeArgs = ($Config.volumes | ForEach-Object { "-v $_" }) -join " "
     $cpCmds = ($Config.volumes | ForEach-Object { "mkdir -p /backup/$_ && mv -v /backup$_ $_" }) -join " && "
-    Write-Output "Restore $remote to local container $backupContainer"
-    Write-Output "Invoking: 'docker' 'run' $volumeArgs'--name' '$backupContainer' '$remote' 'sh' -c '$cpCmds'"
-    Invoke-Cmd "'docker' 'run' $volumeArgs '--name' '$backupContainer' '$remote' 'sh' -c '$cpCmds'"
+    Write-Output "Restore $remote to local container $backupImage"
+    Write-Output "Invoking: 'docker' 'run' $volumeArgs'--name' '$backupImage' '$remote' 'sh' -c '$cpCmds'"
+    Invoke-Cmd "'docker' 'run' $volumeArgs '--name' '$backupImage' '$remote' 'sh' -c '$cpCmds'"
 }
 
 function Backup-FromConfig {
@@ -133,10 +133,3 @@ function New-BackupConfig {
         | Where-Object {$_ -ne $null}
     ConvertTo-Json -InputObject $config | Out-File -FilePath $ConfigFile -Encoding utf8 -Force
 }
-
-
-
-Export-ModuleMember -Function Backup-FromConfig
-Export-ModuleMember -Function Restore-FromConfig
-Export-ModuleMember -Function Get-DataContainerConfig
-Export-ModuleMember -Function New-BackupConfig
