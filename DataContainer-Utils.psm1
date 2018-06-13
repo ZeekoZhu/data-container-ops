@@ -64,7 +64,7 @@ function Get-DataContainerConfig {
     $ErrorActionPreference = 'stop'
     $configs = Get-Content $ConfigFile -Raw | ConvertFrom-Json
     foreach ($cfg in $configs) {
-        Write-Output "$($cfg.container) >> $($cfg.registry)$($cfg.container)-data"
+        Write-Output "$($cfg.container) >> $($cfg.registry)$($cfg.remoteName)-data"
         foreach ($path in $cfg.volumes) {
             Write-Output "    $path"
         }
