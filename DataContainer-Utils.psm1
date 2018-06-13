@@ -1,3 +1,4 @@
+$ErrorActionPreference = 'stop'
 Import-Module "$PSScriptRoot/Utils.psm1"
 function Backup-DataContainer ($Config) {
     $backupContainer = "$($Config.container)-data"
@@ -24,6 +25,7 @@ function Backup-FromConfig {
     param(
         # ConfigFile
         [Parameter(Mandatory = $true)]
+        [ValidateScript( {Test-Path $_} )]
         [string]
         $ConfigFile
     )
@@ -39,6 +41,7 @@ function Restore-FromConfig {
     param(
         # ConfigFile
         [Parameter(Mandatory = $true)]
+        [ValidateScript( {Test-Path $_} )]
         [string]
         $ConfigFile
     )
@@ -54,6 +57,7 @@ function Get-DataContainerConfig {
     param(
         # ConfigFile
         [Parameter(Mandatory = $true)]
+        [ValidateScript( {Test-Path $_} )]
         [string]
         $ConfigFile
     )
