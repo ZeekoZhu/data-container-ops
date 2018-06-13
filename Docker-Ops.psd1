@@ -1,4 +1,4 @@
-#
+﻿#
 # 模块“Docker-Ops”的模块清单
 #
 # 生成者: Zeeko
@@ -12,7 +12,7 @@
 RootModule = 'DataContainer-Utils.psm1'
 
 # 此模块的版本号。
-ModuleVersion = '0.1.0'
+ModuleVersion = '0.1.1'
 
 # 支持的 PSEditions
 # CompatiblePSEditions = @()
@@ -123,4 +123,3 @@ PrivateData = @{
 # DefaultCommandPrefix = ''
 
 }
-
