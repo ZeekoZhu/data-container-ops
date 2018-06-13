@@ -3,7 +3,7 @@ Import-Module "$PSScriptRoot/Utils.psm1"
 function Backup-DataContainer ($Config) {
     $ErrorActionPreference = 'stop'
     $backupImage = "$($Config.remoteName)-data"
-    $volumeArgs = ($Config.volumes | ForEach-Object { "'-v' '/backup/$($_):$_'" }) -join " "
+    $volumeArgs = ($Config.volumes | ForEach-Object { "'-v' '/backup$($_):$_'" }) -join " "
     $cpCmds = ($Config.volumes | ForEach-Object { "cp -Rf /backup$_ $_" }) -join " && "
     Write-Output "Backup local container $($Config.container)'s volumes to ops-backup-$backupImage"
     Write-Output "Invoking: 'docker' 'run' '--volumes-from' '$($Config.container)' '--name' 'ops-backup-$backupImage' $volumeArgs 'alpine' 'sh' -c $cpCmds"
