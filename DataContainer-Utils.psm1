@@ -37,14 +37,16 @@ function Backup-DataContainer ($Config) {
 function Restore-DataContainer ($Config) {
     $backupImage = "$($Config.remoteName)-data"
     $remote = "$($Config.registry)$backupImage"
-    $volumeArgs = ($Config.volumes | ForEach-Object { "-v $_" }) -join " "
+    $volumeArgs = ($Config.volumes | ForEach-Object { "'-v' '$_'" }) -join " "
     $cpCmds = ($Config.volumes | ForEach-Object {
             $parent = Get-ParentPath "$_"
-            "mkdir -p $_ && mv -v /backup$_ $parent"
+            "mkdir -p $_ && cp -vRf /backup$_ $parent"
         }) -join " && "
     Write-Output "Restore $remote to local container $backupImage"
-    Write-Output "Invoking: 'docker' 'run' $volumeArgs'--name' '$backupImage' '$remote' 'sh' -c '$cpCmds'"
-    Invoke-Cmd "'docker' 'run' $volumeArgs '--name' '$backupImage' '$remote' 'sh' -c '$cpCmds'"
+    # pull latest images
+    Invoke-Cmd "docker pull '$remote'"
+    Write-Output "Invoking: 'docker' 'run' $volumeArgs '--name' '$backupImage' '$remote' 'sh' -c '$cpCmds'"
+    Invoke-Cmd "'docker' 'run' $volumeArgs '--name' '$backupImage' '$remote' 'sh' -c '$cpCmds && rm -rf /backup'"
 }
 
 function Backup-FromConfig {

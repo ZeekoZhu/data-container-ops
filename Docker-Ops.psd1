@@ -6,7 +6,7 @@
 
     CompanyName          = 'Unknown'
 
-    ModuleVersion        = '0.3.2'
+    ModuleVersion        = '0.3.3'
 
     # Use the New-Guid command to generate a GUID, and copy/paste into the next line
     GUID                 = '4e2868ab-e830-4b97-99df-8c77f3f4a137'
